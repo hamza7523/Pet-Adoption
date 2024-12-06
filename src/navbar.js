@@ -2,7 +2,7 @@ import React from "react";
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ role, onLogout }) {
   return (
     <AppBar
       position="fixed"
@@ -45,17 +45,19 @@ function Navbar() {
           >
             Home
           </Button>
-          <Button
-            component={Link}
-            to="/admin"
-            sx={{
-              color: "white",
-              fontWeight: "bold",
-              "&:hover": { color: "#FFCA28" },
-            }}
-          >
-            Admin Panel
-          </Button>
+          {role === "admin" && ( // Only show Admin Panel link for administrators
+            <Button
+              component={Link}
+              to="/admin"
+              sx={{
+                color: "white",
+                fontWeight: "bold",
+                "&:hover": { color: "#FFCA28" },
+              }}
+            >
+              Admin Panel
+            </Button>
+          )}
           <Button
             component={Link}
             to="/GiveUpPetForm"
@@ -65,18 +67,39 @@ function Navbar() {
               "&:hover": { color: "#FFCA28" },
             }}
           >
-            Give Up Pet
+            Follow Up Form
           </Button>
           <Button
-            component="a"
-            href="#features"
+            component={Link}
+            to="/Aboutus"
             sx={{
               color: "white",
               fontWeight: "bold",
               "&:hover": { color: "#FFCA28" },
             }}
           >
-            Features
+            About Us
+          </Button>
+          <Button
+            component={Link}
+            to="/ContactUs"
+            sx={{
+              color: "white",
+              fontWeight: "bold",
+              "&:hover": { color: "#FFCA28" },
+            }}
+          >
+            Contact Us
+          </Button>
+          <Button
+            onClick={onLogout}
+            sx={{
+              color: "white",
+              fontWeight: "bold",
+              "&:hover": { color: "#FFCA28" },
+            }}
+          >
+            Logout
           </Button>
         </Box>
       </Toolbar>

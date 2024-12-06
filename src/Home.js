@@ -13,7 +13,8 @@ import PetDetailsModal from "./PetDetailsModal";
 
 import "./styles.css"; // Create a separate CSS file for animations
 
-function Home({ onRequestSubmit }) {
+function Home({ onRequestSubmit =()=>{}}) {
+
   const [openForm, setOpenForm] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);
   const [selectedPet, setSelectedPet] = useState(null);

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types"; // For prop validation
 import {
   TextField,
   Button,
@@ -12,14 +13,11 @@ import {
 
 const GiveUpPetForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
-    ownerName: "",
+    adopterName: "",
     contactInfo: "",
     petName: "",
-    petBreed: "",
-    petAge: "",
-    petVaccinationStatus: "",
-    petHealthNotes: "",
-    petPhotoUrl: "",
+    petRecentHealth: "",
+    petVaccinationUpdates: "",
   });
 
   const [error, setError] = useState("");
@@ -32,40 +30,27 @@ const GiveUpPetForm = ({ onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const {
-      ownerName,
+      adopterName,
       contactInfo,
       petName,
-      petBreed,
-      petAge,
-      petVaccinationStatus,
-      petPhotoUrl,
+      petRecentHealth,
+      petVaccinationUpdates,
     } = formData;
 
-    if (
-      !ownerName ||
-      !contactInfo ||
-      !petName ||
-      !petBreed ||
-      !petAge ||
-      !petVaccinationStatus ||
-      !petPhotoUrl
-    ) {
+    if (!adopterName || !contactInfo || !petName || !petRecentHealth || !petVaccinationUpdates) {
       setError("Please fill out all required fields.");
       return;
     }
 
     setError("");
-    onSubmit(formData);
-    alert("Pet submitted for adoption!");
+    onSubmit(formData); // Call the provided onSubmit function
+    alert("Follow-up information submitted successfully!");
     setFormData({
-      ownerName: "",
+      adopterName: "",
       contactInfo: "",
       petName: "",
-      petBreed: "",
-      petAge: "",
-      petVaccinationStatus: "",
-      petHealthNotes: "",
-      petPhotoUrl: "",
+      petRecentHealth: "",
+      petVaccinationUpdates: "",
     });
   };
 
@@ -74,7 +59,7 @@ const GiveUpPetForm = ({ onSubmit }) => {
       <Card>
         <CardContent>
           <Typography variant="h5" align="center" gutterBottom>
-            Give Up Your Pet for Adoption
+            Follow-Up Form
           </Typography>
           {error && <Alert severity="error">{error}</Alert>}
           <form onSubmit={handleSubmit}>
@@ -82,9 +67,9 @@ const GiveUpPetForm = ({ onSubmit }) => {
               <Grid item xs={12}>
                 <TextField
                   label="Your Name"
-                  name="ownerName"
+                  name="adopterName"
                   fullWidth
-                  value={formData.ownerName}
+                  value={formData.adopterName}
                   onChange={handleInputChange}
                   required
                 />
@@ -111,49 +96,24 @@ const GiveUpPetForm = ({ onSubmit }) => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  label="Pet's Breed"
-                  name="petBreed"
+                  label="Recent Health Updates"
+                  name="petRecentHealth"
                   fullWidth
-                  value={formData.petBreed}
+                  multiline
+                  rows={4}
+                  value={formData.petRecentHealth}
                   onChange={handleInputChange}
                   required
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  label="Pet's Age (Years)"
-                  name="petAge"
+                  label="Vaccination Updates"
+                  name="petVaccinationUpdates"
                   fullWidth
-                  value={formData.petAge}
-                  onChange={handleInputChange}
-                  required
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Vaccination Status"
-                  name="petVaccinationStatus"
-                  fullWidth
-                  value={formData.petVaccinationStatus}
-                  onChange={handleInputChange}
-                  required
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Health Notes (Optional)"
-                  name="petHealthNotes"
-                  fullWidth
-                  value={formData.petHealthNotes}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Pet Photo URL"
-                  name="petPhotoUrl"
-                  fullWidth
-                  value={formData.petPhotoUrl}
+                  multiline
+                  rows={2}
+                  value={formData.petVaccinationUpdates}
                   onChange={handleInputChange}
                   required
                 />
@@ -174,6 +134,18 @@ const GiveUpPetForm = ({ onSubmit }) => {
       </Card>
     </Container>
   );
+};
+
+// Provide a default onSubmit implementation to avoid errors
+GiveUpPetForm.defaultProps = {
+  onSubmit: () => {
+    console.warn("onSubmit function not provided!");
+  },
+};
+
+// Validate that onSubmit is a function
+GiveUpPetForm.propTypes = {
+  onSubmit: PropTypes.func,
 };
 
 export default GiveUpPetForm;
