@@ -1,62 +1,27 @@
-import React from "react";
-import { Box, Typography, Card, CardContent, Button } from "@mui/material";
+import React, { useState } from "react";
+import AddPetForm from "./AddPetForm";
 
-function AdminPanel({ requests, onRequestUpdate }) {
-  const handleApprove = (index) => {
-    const updatedRequests = [...requests];
-    updatedRequests[index].status = "Approved";
-    onRequestUpdate(updatedRequests);
-  };
+const AdminPanel = () => {
+  const [pets, setPets] = useState([]);
 
-  const handleReject = (index) => {
-    const updatedRequests = [...requests];
-    updatedRequests[index].status = "Rejected";
-    onRequestUpdate(updatedRequests);
+  const handleAddPet = (newPet) => {
+    setPets((prevPets) => [...prevPets, newPet]);
   };
 
   return (
-    <Box sx={{ padding: "20px" }}>
-      <Typography variant="h5" align="center" gutterBottom>
-        Adoption Requests
-      </Typography>
-      {requests && requests.length > 0 ? (
-        requests.map((request, index) => (
-          <Card key={index} sx={{ marginBottom: "15px" }}>
-            <CardContent>
-              <Typography variant="h6">Adopter Name: {request.name}</Typography>
-              <Typography variant="body1">Email: {request.email}</Typography>
-              <Typography variant="body1">Pet: {request.pet.name}</Typography>
-              <Typography variant="body2">
-                Message: {request.message || "No message provided"}
-              </Typography>
-              <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                Status: {request.status || "Pending"}
-              </Typography>
-              <Box sx={{ marginTop: "10px" }}>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={() => handleApprove(index)}
-                  sx={{ marginRight: "10px" }}
-                >
-                  Approve
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => handleReject(index)}
-                >
-                  Reject
-                </Button>
-              </Box>
-            </CardContent>
-          </Card>
-        ))
-      ) : (
-        <Typography align="center">No adoption requests yet.</Typography>
-      )}
-    </Box>
+    <div className="admin-panel">
+      <h1>Admin Panel</h1>
+      <AddPetForm onAddPet={handleAddPet} />
+      <h2>Pets List</h2>
+      <ul>
+        {pets.map((pet) => (
+          <li key={pet.PetID}>
+            {`${pet.PetName}, a ${pet.PetSize} ${pet.Breed} (${pet.PetType}), Age: ${pet.Age}, Gender: ${pet.Gender}, Health: ${pet.HealthStatus}, Vaccination: ${pet.VaccinationStatus}, Status: ${pet.Availability}`}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
-}
+};
 
 export default AdminPanel;

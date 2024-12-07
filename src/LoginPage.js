@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from 'axios';
+
 import {
   Box,
   TextField,
@@ -17,17 +19,37 @@ function LoginPage({ onLogin }) {
   const [role, setRole] = useState("user"); // Default role is "user"
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
-    // Simple validation for demonstration
-    if (username === "" || password === "") {
-      setError("Please fill in all fields");
-      return;
-    }
-
-    // Pass the selected role to App.js
-    onLogin(role);
-  };
   
+    
+        const handleLogin = async () => {
+            if (username === "" || password === "") {
+              setError("Please fill in all fields");
+              return;
+            }
+          
+            try {
+              const response = await axios.post("http://localhost:5000/api/auth/login", {
+                Email: username, // Send email as "Email"
+                Password: password, // Send password as "Password"
+              });
+          
+              const { message, token } = response.data;
+          
+              // Save the token (e.g., in localStorage or context)
+              localStorage.setItem("authToken", token);
+          
+              setError(""); // Clear errors
+              alert(message); // Show success message
+              onLogin(role); // Call parent component function
+            } catch (err) {
+              if (err.response && err.response.status === 401) {
+                setError("Invalid email or password");
+              } else {
+                setError("An error occurred. Please try again.");
+              }
+            }
+          };
+          
 
   return (
     <Box
@@ -121,4 +143,4 @@ function LoginPage({ onLogin }) {
   );
 }
 
-export default LoginPage;
+export default LoginPage
