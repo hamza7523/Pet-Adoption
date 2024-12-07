@@ -128,6 +128,7 @@ function Home({ onRequestSubmit = () => {} }) {
   const handleFormClose = () => {
     setOpenForm(false);
     setSelectedPet(null);
+    console.log("hamza");
   };
 
   const handleDetailsOpen = (pet) => {
